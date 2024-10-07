@@ -1,0 +1,50 @@
+body {
+    background-color:honeydew;
+}
+h1,h2{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: black;
+}
+
+table{
+    border: 2px solid darkslategray;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    border-radius: 10px;
+}
+tr,td{
+    border: 2px solid darkslategray;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    background-color: azure;
+}
+.but {
+    color:white;
+    background-color:darkslategrey;
+    border: 2px solid black;
+    width: 250px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    padding:10px;
+    margin:5px;
+    text-align:center;
+  border-radius: 10px;
+}
+.but:hover {
+    background-color: white;
+	color: black;
+	transition: 0.7s;
+}
+.text {
+    color:black;
+	border-radius: 40px;
+	border: 2px solid black;
+	width: 350px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	padding: 10px;
+    margin: 5px;
+}
