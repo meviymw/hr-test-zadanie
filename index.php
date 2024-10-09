@@ -10,8 +10,42 @@
     <title>Учёт сотрудников</title>
 </head>
 <body>
-    <h1>Список сотрудников</h1>
+    <h1>Информация о сотрудниках</h1>
 
+    <form action='submit.php' method="get">
+        <h2>Добавить нового сотрудника</h2>
+        <input class="text" name="FIO" placeholder="ФИО" required>
+        <input type="date" name="Date_birth" class="text" required>
+        <input id="passport" class="text" name="Seria_and_nomer_passporta" placeholder="Паспорт" maxlength="10">
+        <script>
+            $(function(){
+                $("#passport").mask("99 99 999999");
+            });
+            </script>
+        <input id="phonenum" name="Contact_info" class="text" placeholder="Контактная информация" maxlength="10">
+        <script>
+            $(function(){
+                $("#phonenum").mask("+7(999)-999-99-99");
+            });
+            </script>
+        <input class="text" name="Adress" placeholder="Адрес">
+        <input class="text" name="Otdel" placeholder="Отдел">
+        <input class="text" name="Doljnost" placeholder="Должность">
+        <input type="number" name="Zarplata" placeholder="Зарплата" step="0.01" class="text" id="zp">
+        <input type="date" name="Date_prin_na_rab" class="text" required>
+ 
+        <button type="submit" name="FormSubmit" value="add" class="but">Добавить сотрудника</button>
+
+        
+    <h2>Применение фильтра</h2>
+    
+    <form action="" method="GET">
+        <input class="text" name="filter_otdel" placeholder="Отдел">
+        <input class="text" name="filter_doljnost" placeholder="Должность">
+        <button type="submit" class="but">Применить фильтр</button>
+    </form>
+<br>
+<h2>Список сотрудников</h2>
     <table>
          <tr>
             <th>ID</th>;
@@ -27,17 +61,20 @@
             <th>Статус</th>;
         </tr>
     <?php
+    
+   
+    $mysqli = new mysqli("127.0.0.1", "root", "", "Uchet_sotrudnikov");
 
-    $conn = mysqli_connect("127.0.0.1", "root", "", "Uchet_sotrudnikov");
-
-    if ($conn == false){
+    if ($mysqli == false){
         print("Ошибка: Невозможно подключиться к MySQL " . mysqli_connect_error());
     }
-    mysqli_set_charset($conn, "utf8");
+    mysqli_set_charset($mysqli, "utf8");
+
+ 
 
     $sql = 'SELECT * FROM Information_about_sotr';
 
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_query($mysqli, $sql);
 
     while ($row = mysqli_fetch_array($result)) {
         echo "<tr>";
@@ -61,37 +98,5 @@
     }
     ?>
     </table>
-
-    <h2>Применение фильтра</h2>
-    
-    <form action="" method="GET">
-        <input class="text" name="filter_otdel" placeholder="Отдел">
-        <input class="text" name="filter_doljnost" placeholder="Должность">
-        <button type="submit" class="but">Применить фильтр</button>
-    </form>
-
- <form action="submit.php" method="POST">
-        <h2>Добавить нового сотрудника</h2>
-        <input class="text" name="FIO" placeholder="ФИО" required>
-        <input type="date" name="Date_birth" class="text" required>
-        <input id="passport" class="text" name="Seria_and_nomer_passporta" placeholder="Паспорт" maxlength="10">
-        <script>
-            $(function(){
-                $("#passport").mask("99 99 999999");
-            });
-            </script>
-        <input id="phonenum" name="Contact_info" class="text" placeholder="Контактная информация" maxlength="10">
-        <script>
-            $(function(){
-                $("#phonenum").mask("+7(999)-999-99-99");
-            });
-            </script>
-        <input class="text" name="Adress" placeholder="Адрес">
-        <input class="text" name="Otdel" placeholder="Отдел">
-        <input class="text" name="Doljnost" placeholder="Должность">
-        <input type="number" name="Zarplata" placeholder="Зарплата" step="0.01" class="text" id="zp">
-        <input type="date" name="Date_prin_na_rab" class="text" required>
-        <button type="submit" name="action" value="add" class="but">Добавить сотрудника</button>
-    </form>
 </body>
 </html>
