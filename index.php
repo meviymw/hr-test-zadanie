@@ -35,16 +35,17 @@
         <input type="date" name="Date_prin_na_rab" class="text" required>
  
         <button type="submit" name="FormSubmit" value="add" class="but">Добавить сотрудника</button>
-
+        </form>
         
     <h2>Применение фильтра</h2>
     
     <form action="" method="GET">
         <input class="text" name="filter_otdel" placeholder="Отдел">
         <input class="text" name="filter_doljnost" placeholder="Должность">
-        <button type="submit" class="but">Применить фильтр</button>
+        <button type="submit" class="but" name="filter_on">Применить фильтр</button>
+        <button type="submit" class="but" name="reset_filter">Сбросить фильтр</button>
     </form>
-<br>
+
 <h2>Список сотрудников</h2>
     <table>
          <tr>
@@ -70,17 +71,26 @@
     }
     mysqli_set_charset($mysqli, "utf8");
 
- 
+    $filter_otdel = isset($_GET['filter_otdel']) ? $_GET['filter_otdel'] : '';
+        $filter_doljnost = isset($_GET['filter_doljnost']) ? $_GET['filter_doljnost'] : '';
 
-    $sql = 'SELECT * FROM Information_about_sotr';
+        $query = "SELECT * FROM Information_about_sotr WHERE 1=1";
+        if ($filter_otdel) {
+            $query .= " AND Otdel LIKE '%$filter_otdel%'";
+        }
+        if ($filter_doljnost) {
+            $query .= " AND Doljnost LIKE '%$filter_doljnost%'";
+        }
 
-        $result = mysqli_query($mysqli, $sql);
+        $result = $mysqli->query($query);
 
-    while ($row = mysqli_fetch_array($result)) {
+
+    while ($row = $result->fetch_assoc()) {
         echo "<tr>";
         echo "<td>" . $row['ID_sotrudnika']. "</td>";
         echo "<td>" . $row['FIO_sotrudnika'] . "</td>";
         echo "<td>" . $row['Date_birth'] . "</td>";
+        echo "<td>" . $row['Seria_and_nomer_passporta'] . "</td>";
         echo "<td>" . $row['Contact_info'] . "</td>";
         echo "<td>" . $row['Adress'] . "</td>";
         echo "<td>" . $row['Otdel'] . "</td>";
