@@ -34,10 +34,8 @@ Adress, Otdel, Doljnost, Zarplata, Date_prin_na_rab, Status) VALUES ('$FIO_sotru
 '$Contact_info', '$Adress', '$Otdel', '$Doljnost', '$Zarplata', '$Date_prin_na_rab', 'Работает')";
 
 $result = $mysqli->query($query);
-if($result){
-    print('Данные успешно внесены.' . '<br>');
 
-}
+
 $mysqli->close();
 header("Location: index.php"); 
 exit;
