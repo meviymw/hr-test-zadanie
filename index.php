@@ -6,7 +6,6 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="jquery.maskedinput.min.js"></script>
-
     <title>Учёт сотрудников</title>
 </head>
 <body>
@@ -46,6 +45,12 @@
         <button type="submit" class="but" name="reset_filter">Сбросить фильтр</button>
     </form>
 
+    <h2>Поиск по ФИО</h2>
+    <form action="" method="get">
+        <input class="text" name="poisk_FIO" placeholder="Введите ФИО">
+        <button type="submit" class="but" name="poisk_on">Искать</button>
+        <button type="submit" class="but" name="reset_filter">Сбросить</button>
+        </form>
 <h2>Список сотрудников</h2>
     <table>
          <tr>
@@ -73,6 +78,7 @@
 
     $filter_otdel = isset($_GET['filter_otdel']) ? $_GET['filter_otdel'] : '';
         $filter_doljnost = isset($_GET['filter_doljnost']) ? $_GET['filter_doljnost'] : '';
+        $poisk_FIO=isset($_GET['poisk_FIO']) ? $_GET['poisk_FIO'] : '';
 
         $query = "SELECT * FROM Information_about_sotr WHERE 1=1";
         if ($filter_otdel) {
@@ -81,12 +87,19 @@
         if ($filter_doljnost) {
             $query .= " AND Doljnost LIKE '%$filter_doljnost%'";
         }
+        if($poisk_FIO){
+            $query .= " AND FIO_sotrudnika LIKE '%$poisk_FIO%'";
+        }
 
         $result = $mysqli->query($query);
 
 
     while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
+
+        $rowStyle = ($row['Status'] === 'Уволен') ? "style='background-color: #ffcccc;'" : "";
+
+        echo "<tr $rowStyle>";
+ 
         echo "<td>" . $row['ID_sotrudnika']. "</td>";
         echo "<td>" . $row['FIO_sotrudnika'] . "</td>";
         echo "<td>" . $row['Date_birth'] . "</td>";
@@ -100,12 +113,27 @@
         echo "<td>" . $row['Status'] . "</td>";
         echo "<td>";
 
-        echo "<button type='submit' name='action' class='but' value='edit'>Редактировать</button>";
 
-        echo "<button type='submit' name='action' class='but' value='edit'>Уволить</button>";
+        $rowStyle = ($row['Status'] === 'Уволен') ? "style='background-color: red;'" : "";
+  
+        if ($row['Status'] !== 'Уволен') {  
+        echo "<a href='edit.php?ID_sotrudnika=" . htmlspecialchars($row['ID_sotrudnika']) . "' '>Редактировать</a>";
 
+        if ($row['Status'] === 'Уволен')
+        {
+            $rowStyle = ($row['Status'] === 'Уволен') ? "style='background-color: red;'" : "";
+        }
+        echo "<form action='uvol.php' method='POST';'>
+        <input type='hidden' name='ID_sotrudnika' value='" . $row['ID_sotrudnika'] . "'>
+        <button type='submit' name='delete' class='but' value='delete'>Уволить</button>
+        </form>";
+
+        echo "</td>";
+        echo"</tr>";
+        }
 
     }
+
     ?>
     </table>
 </body>
